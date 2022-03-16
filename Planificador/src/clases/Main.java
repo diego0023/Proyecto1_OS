@@ -18,15 +18,17 @@ public class Main extends javax.swing.JFrame {
     Convertidor convert = new Convertidor();
     // variable para llevar id correlativas 0= os, 1 = activador
     int id = 2;
+    // objeto del procesador
+    procesador cpu = new procesador();
 
-    // variables axi
     public Main() {
         initComponents();
+        cpu.start();
     }
 
     public int getRandom() {
 
-        int value = random.nextInt(10 + 5) + 5;
+        int value = (int) Math.floor(Math.random() * 10 + 5);
         return value;
     }
 
@@ -34,14 +36,24 @@ public class Main extends javax.swing.JFrame {
 
         // variables axiliares
         int quantum = 5;
+        // proceso que se esta ejecutando
         Procesos aux = new Procesos();
-        int pc; // contador de programa
-
+        Procesos aux2 = new Procesos();
+        // contador de programa (que espacio de memoria esta en ejecucion)
+        int pc;
+       // variable para cambiar de proceso
+        int index;
         @Override
         public void run() {
+            // proceso infinito para que no se muera el hilo 
             while (true) {
+
                 if (memoria.isEmpty()) {
                     // si no existe nada en la lista de procesos solo se prende y apaga el activador
+                    lbBase.setText("");
+                    lbIDProceso.setText("");
+                    lbLimite.setText("");
+                    lbContadorPrograma.setText("");
                     lbActivador.setText("ON");
                     try {
                         Thread.sleep(2000);
@@ -49,15 +61,23 @@ public class Main extends javax.swing.JFrame {
                         Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
                     }
                     lbActivador.setText("OFF");
+                    // ver que esta cambiando de on a off/ para eso este sleep
+                    try {
+                        Thread.sleep(500);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
                 } else {
                     // si existe algun proceso se carga al procesador
                     while (memoria.ProcesoActual != null) {
                         aux = memoria.ProcesoActual;
                         lbIDProceso.setText(String.valueOf(aux.getId()));
-                        lbBase.setText(String.valueOf(aux.getPosinicial()));
-                        lbLimite.setText(String.valueOf(aux.getPosfinal()));
+                        lbBase.setText(String.valueOf(aux.getPosinicialHex()));
+                        lbLimite.setText(String.valueOf(aux.getPosfinalHex()));
                         pc = aux.getPosinicial();
-                        while (quantum > 0 || aux.getTamanioRestante() > 0) {
+                        System.out.println("Proceso " + aux.getId() );
+                        while ((quantum > 0) && (aux.getTamanioRestante() > 0)) {
                             // poner la instruccion ejecutandose
                             lbContadorPrograma.setText(convert.convertir(pc));
                             try {
@@ -66,21 +86,56 @@ public class Main extends javax.swing.JFrame {
                                 Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
                             }
                             quantum--;
+                            System.out.println("Quantum: " + quantum);
+                            System.out.println("Tiempo restante: " +aux.getTamanioRestante() );
                             pc++;
-                            aux.setTamanioRestante(aux.getTamanioRestante()-1);
+                            aux.setTamanioRestante(aux.getTamanioRestante() - 1);
 
                         }
                         // pasan los 5 segundos de quantum o se acabo el tiempo del procesos
-                        if (aux.getTamanioRestante() == 0 ) {
-                            int index = memoria.proceso.indexOf(aux);
-                            memoria.setTamanio(memoria.getTamanio() + aux.getTamanio());
-                            memoria.proceso.remove(index);
-                            // pasar al siguiente proceso
+                        /* replanificar 
+                        ver si el proceso se acabo para eliminarlo 
+                        pasar al siguiente proceso
+                        si el el ultimo ir al inicio 
+                         */
+                        // pasar al siguiente proceso, ver si el el ultimo
+                        if (memoria.isLast(memoria.ProcesoActual)) {
+                           // esta en el ultimo proceso pasa al primero/ si solo hay uno da vueltas
+                            memoria.setProcesoActual(memoria.proceso.getFirst());
+                        } else {
+                            // pasamos al siguiente 
+                           
+                            aux2 =  memoria.getNext(aux);
+                            memoria.setProcesoActual(aux2);
                             
-                            memoria.ProcesoActual = memoria.proceso.get(index + 1);
-                        }else{
                             
                         }
+                        
+                        // ver si es necesario eliminar el proceso
+                        if (aux.getTamanioRestante() == 0) {
+                            memoria.proceso.remove(aux);
+                            memoria.Print();
+                            // regresar el espacio libre a la memoria
+                            memoria.setTamanio(memoria.getTamanio() + aux.getTamanio());
+                            // ver si la lista no se quedo basia
+                            if (memoria.proceso.size() == 0) {
+                                memoria.setProcesoActual(null);
+                            }
+                        }
+                        // mostrar que el activador esta planificando
+                        lbActivador.setText("ON");
+                        try {
+                            Thread.sleep(2000);
+                        } catch (InterruptedException ex) {
+                            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                        lbActivador.setText("OFF");
+                        try {
+                            Thread.sleep(500);
+                        } catch (InterruptedException ex) {
+                            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                        quantum = 5;
                     }
 
                 }
@@ -252,6 +307,9 @@ public class Main extends javax.swing.JFrame {
             memoria.proceso.addLast(aux);
             memoria.setTamanio(memoria.getTamanio() - tamanio);
             memoria.ProcesoActual = memoria.proceso.getFirst();
+            JOptionPane.showMessageDialog(this, "Proceso creado");
+            // visualizar que hay en la lista
+            memoria.Print();
         } else {
             // ver si queda espacio para agregarlo 
             tamanio = getRandom();
@@ -265,6 +323,9 @@ public class Main extends javax.swing.JFrame {
                     this.id++;
                     memoria.proceso.addLast(aux);
                     memoria.setTamanio(memoria.getTamanio() - tamanio);
+                    JOptionPane.showMessageDialog(this, "Proceso creado");
+                    // visualizar que hay en la lista
+                    memoria.Print();
 
                 } else {
                     JOptionPane.showMessageDialog(this, "No se puede crear el proceso por falta de espacio en memoria");

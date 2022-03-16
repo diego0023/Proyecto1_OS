@@ -23,8 +23,11 @@ public class MemoriaPrincipal {
     }
     
    public Procesos getNext(Procesos pro){
+     
        int index = proceso.indexOf(pro);
-      return proceso.get(index++);
+       index++;
+      
+      return proceso.get(index);
    } 
     
     boolean isSpace(int tamanio){
