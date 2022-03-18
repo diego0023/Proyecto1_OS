@@ -9,12 +9,15 @@ import javax.swing.JOptionPane;
 
 public class Main extends javax.swing.JFrame {
 
+    public String historial="";
     /**
      * Creates new form Main
      */
+    Calendar cal = Calendar.getInstance();
     Random random = new Random();
     // Memoria Principal
     MemoriaPrincipal memoria = new MemoriaPrincipal();
+    Historial hist ;
     // metodo axiliar para poder convertir de decimal a exadecimal
     Convertidor convert = new Convertidor();
     // variable para llevar id correlativas 0= os, 1 = activador
@@ -83,6 +86,11 @@ public class Main extends javax.swing.JFrame {
                         lbLimite.setText(String.valueOf(aux.getPosfinalHex()));
                         pc = aux.getPosinicial();
                         System.out.println("Proceso " + aux.getId());
+                        hist = new Historial(aux.getId());
+                        hist.setTiempo_inicial();
+                        System.out.println("Tiempo inicial: "+hist.getTiempo_inicial());
+                        historial = historial + "Id: "+hist.getId()+hist.getTiempo_inicial()+"\n";
+                        jTextArea1.setText(historial);
                         while ((quantum > 0) && (aux.getTamanioRestante() > 0)) {
                             // poner la instruccion ejecutandose
                             lbContadorPrograma.setText(convert.convertir(pc));
@@ -96,8 +104,8 @@ public class Main extends javax.swing.JFrame {
                             System.out.println("Tiempo restante: " + aux.getTamanioRestante());
                             pc++;
                             aux.setTamanioRestante(aux.getTamanioRestante() - 1);
-
                         }
+
                         // pasan los 5 segundos de quantum o se acabo el tiempo del procesos
                         /* replanificar 
                         ver si el proceso se acabo para eliminarlo 
@@ -107,10 +115,13 @@ public class Main extends javax.swing.JFrame {
                         // pasar al siguiente proceso, ver si el el ultimo
                         if (memoria.isLast(memoria.ProcesoActual)) {
                             // esta en el ultimo proceso pasa al primero/ si solo hay uno da vueltas
+                            hist.setTiempo_final();
+                            historial = historial + "Id: "+hist.getId()+hist.getTiempo_final()+"\n";
                             memoria.setProcesoActual(memoria.proceso.getFirst());
                         } else {
                             // pasamos al siguiente 
-
+                            hist.setTiempo_final();
+                            historial = historial + "Id: "+hist.getId()+hist.getTiempo_final()+"\n";
                             aux2 =  memoria.getNext(aux);
                             memoria.setProcesoActual(aux2);
 
@@ -174,6 +185,9 @@ public class Main extends javax.swing.JFrame {
         lbActivador = new javax.swing.JLabel();
         Hora = new javax.swing.JLabel();
         WTime = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTextArea1 = new javax.swing.JTextArea();
+        jLabel8 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -272,12 +286,22 @@ public class Main extends javax.swing.JFrame {
             }
         });
 
+        jTextArea1.setColumns(20);
+        jTextArea1.setRows(5);
+        jScrollPane1.setViewportView(jTextArea1);
+
+        jLabel8.setText("Historial");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(Hora, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(WTime))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(21, 21, 21)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -289,12 +313,12 @@ public class Main extends javax.swing.JFrame {
                         .addGap(73, 73, 73)
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(Hora, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(WTime)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel8)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 333, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -318,7 +342,11 @@ public class Main extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(18, 18, 18)
                         .addComponent(WTime)
-                        .addContainerGap(15, Short.MAX_VALUE))))
+                        .addGap(29, 29, 29)
+                        .addComponent(jLabel8)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(95, Short.MAX_VALUE))))
         );
 
         pack();
@@ -362,8 +390,8 @@ public class Main extends javax.swing.JFrame {
                     Thread.sleep(1);
                 } catch (InterruptedException ex) {
                     Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
+                }               
+            }           
         }
    
     }
@@ -400,7 +428,7 @@ public class Main extends javax.swing.JFrame {
                     this.id++;
                     memoria.proceso.addLast(aux);
                     memoria.setTamanio(memoria.getTamanio() - tamanio);
-                    JOptionPane.showMessageDialog(this, "Proceso creado");
+                    JOptionPane.showMessageDialog(this, "Proceso creado");    
                     // visualizar que hay en la lista
                     memoria.Print();
 
@@ -465,7 +493,10 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JLabel lbActivador;
     private javax.swing.JLabel lbBase;
     private javax.swing.JLabel lbContadorPrograma;
