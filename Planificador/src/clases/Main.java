@@ -1,15 +1,17 @@
 package clases;
 
 import java.beans.PropertyChangeSupport;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 public class Main extends javax.swing.JFrame {
 
-    public String historial="";
+    public String historial = "";
     /**
      * Creates new form Main
      */
@@ -17,7 +19,7 @@ public class Main extends javax.swing.JFrame {
     Random random = new Random();
     // Memoria Principal
     MemoriaPrincipal memoria = new MemoriaPrincipal();
-    Historial hist ;
+    Historial hist;
     // metodo axiliar para poder convertir de decimal a exadecimal
     Convertidor convert = new Convertidor();
     // variable para llevar id correlativas 0= os, 1 = activador
@@ -27,11 +29,18 @@ public class Main extends javax.swing.JFrame {
     // Reloj 
     Reloj horaActual = new Reloj();
     //Solicitar Tiempo
-    boolean FTime=false;
+    boolean FTime = false;
+    //Para graficar memoria principal
+    public ArrayList<Object> lista = new ArrayList<Object>();
+    public ArrayList<Integer> t = new ArrayList<Integer>();
+    //Definir modelo de tabla
+    private DefaultTableModel modelo;
+
     public Main() {
         initComponents();
         cpu.start();
         horaActual.start();
+        modelo = (DefaultTableModel) jTable1.getModel();
     }
 
     public int getRandom() {
@@ -88,8 +97,8 @@ public class Main extends javax.swing.JFrame {
                         System.out.println("Proceso " + aux.getId());
                         hist = new Historial(aux.getId());
                         hist.setTiempo_inicial();
-                        System.out.println("Tiempo inicial: "+hist.getTiempo_inicial());
-                        historial = historial + "Id: "+hist.getId()+hist.getTiempo_inicial()+"\n";
+                        System.out.println("Tiempo inicial: " + hist.getTiempo_inicial());
+                        historial = historial + "Id: " + hist.getId() + hist.getTiempo_inicial() + "\n";
                         jTextArea1.setText(historial);
                         while ((quantum > 0) && (aux.getTamanioRestante() > 0)) {
                             // poner la instruccion ejecutandose
@@ -116,16 +125,15 @@ public class Main extends javax.swing.JFrame {
                         if (memoria.isLast(memoria.ProcesoActual)) {
                             // esta en el ultimo proceso pasa al primero/ si solo hay uno da vueltas
                             hist.setTiempo_final();
-                            historial = historial + "Id: "+hist.getId()+" Proceso finalizado: "+hist.getTiempo_final()+"\n";
+                            historial = historial + "Id: " + hist.getId() + " Proceso finalizado: " + hist.getTiempo_final() + "\n";
                             memoria.setProcesoActual(memoria.proceso.getFirst());
                         } else {
                             // pasamos al siguiente 
                             hist.setTiempo_final();
-                            historial = historial + "Id: "+hist.getId()+" Proceso finalizado: "+hist.getTiempo_final()+"\n";
-                            aux2 =  memoria.getNext(aux);
+                            historial = historial + "Id: " + hist.getId() + " Proceso finalizado: " + hist.getTiempo_final() + "\n";
+                            aux2 = memoria.getNext(aux);
                             memoria.setProcesoActual(aux2);
 
-                            
                         }
 
                         // ver si es necesario eliminar el proceso
@@ -134,6 +142,10 @@ public class Main extends javax.swing.JFrame {
                             memoria.Print();
                             // regresar el espacio libre a la memoria
                             memoria.setTamanio(memoria.getTamanio() + aux.getTamanio());
+                            //actualizar memoria principal
+                            lista = memoria.mandarInfo();
+                            t = memoria.getT();
+                            memoriaPrincipal(lista);
                             // ver si la lista no se quedo basia
                             if (memoria.proceso.size() == 0) {
                                 memoria.setProcesoActual(null);
@@ -188,8 +200,11 @@ public class Main extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
         jLabel8 = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         btnProceso.setText("Agregar Proceso");
         btnProceso.addActionListener(new java.awt.event.ActionListener() {
@@ -197,6 +212,7 @@ public class Main extends javax.swing.JFrame {
                 btnProcesoActionPerformed(evt);
             }
         });
+        getContentPane().add(btnProceso, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 120, -1, -1));
 
         jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
 
@@ -275,9 +291,14 @@ public class Main extends javax.swing.JFrame {
                 .addGap(46, 46, 46))
         );
 
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(562, 30, -1, -1));
+
         jLabel7.setText("ACTIVADOR:");
+        getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 170, -1, -1));
+        getContentPane().add(lbActivador, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 170, 64, 16));
 
         Hora.setText("Hora de Sistema");
+        getContentPane().add(Hora, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 525, 112, -1));
 
         WTime.setText("Mostrar Hora");
         WTime.addActionListener(new java.awt.event.ActionListener() {
@@ -285,69 +306,42 @@ public class Main extends javax.swing.JFrame {
                 WTimeActionPerformed(evt);
             }
         });
+        getContentPane().add(WTime, new org.netbeans.lib.awtextra.AbsoluteConstraints(858, 266, -1, -1));
 
         jTextArea1.setColumns(20);
         jTextArea1.setRows(5);
         jScrollPane1.setViewportView(jTextArea1);
 
-        jLabel8.setText("Historial");
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(625, 339, 333, 91));
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(Hora, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(WTime))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(21, 21, 21)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(btnProceso)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel7)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(lbActivador, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(73, 73, 73)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel8)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 333, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap())
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(68, 68, 68)
-                        .addComponent(btnProceso)
-                        .addGap(78, 78, 78)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel7)
-                            .addComponent(lbActivador, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(30, 30, 30)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(Hora)
-                        .addContainerGap())
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(WTime)
-                        .addGap(29, 29, 29)
-                        .addComponent(jLabel8)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(95, Short.MAX_VALUE))))
-        );
+        jLabel8.setText("Historial");
+        getContentPane().add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(625, 317, -1, -1));
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Activador", " ", " "
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jTable1.getTableHeader().setReorderingAllowed(false);
+        jScrollPane2.setViewportView(jTable1);
+        if (jTable1.getColumnModel().getColumnCount() > 0) {
+            jTable1.getColumnModel().getColumn(0).setResizable(false);
+            jTable1.getColumnModel().getColumn(1).setResizable(false);
+            jTable1.getColumnModel().getColumn(2).setResizable(false);
+        }
+
+        getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 30, 310, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -381,19 +375,18 @@ public class Main extends javax.swing.JFrame {
                 }
                 horaSistema += String.valueOf(calendario.get(Calendar.MILLISECOND)) + " hrs";
                 Hora.setText(horaSistema);
-                if(FTime==true)
-                {
+                if (FTime == true) {
                     JOptionPane.showMessageDialog(null, "La Hora es: " + horaSistema);
-                    FTime=false;
+                    FTime = false;
                 }
                 try {
                     Thread.sleep(1);
                 } catch (InterruptedException ex) {
                     Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-                }               
-            }           
+                }
+            }
         }
-   
+
     }
 
     private void btnProcesoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProcesoActionPerformed
@@ -415,6 +408,10 @@ public class Main extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Proceso creado");
             // visualizar que hay en la lista
             memoria.Print();
+            //actualizar memoria principal
+            lista = memoria.mandarInfo();
+            t = memoria.getT();
+            memoriaPrincipalVacia(lista);
         } else {
             // ver si queda espacio para agregarlo 
             tamanio = getRandom();
@@ -428,9 +425,13 @@ public class Main extends javax.swing.JFrame {
                     this.id++;
                     memoria.proceso.addLast(aux);
                     memoria.setTamanio(memoria.getTamanio() - tamanio);
-                    JOptionPane.showMessageDialog(this, "Proceso creado");    
-                    // visualizar que hay en la lista
+                    JOptionPane.showMessageDialog(this, "Proceso creado");
+                    // visualizar que hay en la lista en consola
                     memoria.Print();
+                    //actualizar memoria principal
+                    lista = memoria.mandarInfo();
+                    t = memoria.getT();
+                    memoriaPrincipal(lista);
 
                 } else {
                     JOptionPane.showMessageDialog(this, "No se puede crear el proceso por falta de espacio en memoria");
@@ -442,9 +443,46 @@ public class Main extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnProcesoActionPerformed
 
+    public void memoriaPrincipal(ArrayList<Object> lista) {
+        //System.out.println("Tamañoo " + memoria.getT());
+        //primero eliminar todas los procesos
+        int tt = modelo.getRowCount();
+        for (int i = tt - 1; i >= 0; i--) {
+            modelo.removeRow(i);
+        }
+        //luego actualizar la memoria con los nuevos
+        for (int i = 0; i < lista.size(); i++) {
+            modelo.addRow((Object[]) lista.get(i));
+            int aux = t.get(i) - 4;
+            if (t.get(i) < 11) {
+                jTable1.setRowHeight(i, (30 + aux));
+            } else {
+                aux = t.get(i) - 10;
+                jTable1.setRowHeight(i, (40 + aux));
+            }
+
+            //System.out.println("Tamañoo  :"+ t.get(i));
+        }
+    }
+
+    public void memoriaPrincipalVacia(ArrayList<Object> lista) {
+        //System.out.println("Tamañoo " + memoria.getT());
+        //luego actualizar la memoria con los nuevos
+        for (int i = 0; i < lista.size(); i++) {
+            modelo.addRow((Object[]) lista.get(i));
+            int aux = t.get(i) - 4;
+            if (t.get(i) < 11) {
+                jTable1.setRowHeight(i, (30 + aux));
+            } else {
+                aux = t.get(i) - 10;
+                jTable1.setRowHeight(i, (40 + aux));
+            }
+        }
+
+    }
     private void WTimeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_WTimeActionPerformed
         // TODO add your handling code here:
-        FTime=true;
+        FTime = true;
     }//GEN-LAST:event_WTimeActionPerformed
 
     /**
@@ -496,6 +534,8 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTable jTable1;
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JLabel lbActivador;
     private javax.swing.JLabel lbBase;

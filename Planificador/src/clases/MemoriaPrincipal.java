@@ -4,6 +4,7 @@
  */
 package clases;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 /**
@@ -13,63 +14,90 @@ import java.util.LinkedList;
 public class MemoriaPrincipal {
     private int tamanio = 50;
     // las posiciones 0 a 40 estan ocupadas por el os, pocisones 41 a 49 por el activador
-    private int punteroDeMomoria= 50;
+    private int punteroDeMomoria = 50;
     public LinkedList<Procesos> proceso = new LinkedList<Procesos>();
-    public Procesos ProcesoActual = null
-            ;
-    boolean isEmpty(){
+    public ArrayList<Object> lista = new ArrayList<>();
+    public ArrayList<Integer> t = new ArrayList<>();
+    public Procesos ProcesoActual = null;
+    //private int t = 0;
+
+    public ArrayList<Integer> getT() {
+        return t;
+    }
+
+    boolean isEmpty() {
         return proceso.isEmpty();
-        
+
     }
-    
-   public Procesos getNext(Procesos pro){
-     
-       int index = proceso.indexOf(pro);
-       index++;
-      
-      return proceso.get(index);
-   } 
-    
-    boolean isSpace(int tamanio){
-        if (tamanio<= this.tamanio) {
+
+
+    public Procesos getNext(Procesos pro) {
+
+        int index = proceso.indexOf(pro);
+        index++;
+
+        return proceso.get(index);
+    }
+
+    boolean isSpace(int tamanio) {
+        if (tamanio <= this.tamanio) {
             return true;
-        }else{
+        } else {
             return false;
         }
     }
-    
-    boolean cabeAlFinal(int tamanio){
+
+    boolean cabeAlFinal(int tamanio) {
         int index = proceso.getLast().getPosfinal();
-        
-        if((index + tamanio) > 100){
+
+        if ((index + tamanio) > 100) {
             return false;
-        }else{
+        } else {
             return true;
         }
-        
+
     }
-    boolean isLast(Procesos pro){
+
+    boolean isLast(Procesos pro) {
         if (pro == this.proceso.getLast()) {
             return true;
-        }else{
+        } else {
             return false;
         }
     }
-    
-    public int ultimaPos(){
-         int index = proceso.getLast().getPosfinal();
-         return index++;
-                 
+
+    public int ultimaPos() {
+        int index = proceso.getLast().getPosfinal();
+        return index++;
+
     }
-    public void Print(){
+
+    public void Print() {
         // metodo para ver que esta en la lista de procesos 
         System.out.println("Memoria");
         System.out.println("OS posI= 0x0 -- PosF= 0x28 ");
         System.out.println("Activador posI= 0x29 -- PosF= 0x31 ");
         for (int i = 0; i < proceso.size(); i++) {
-            
-            System.out.println(String.valueOf(proceso.get(i).getId())  + " posI= " + proceso.get(i).getPosinicialHex() + " posF= " + proceso.get(i).getPosfinalHex());
+
+            System.out.println(String.valueOf(proceso.get(i).getId()) + " posI= " + proceso.get(i).getPosinicialHex() + " posF= " + proceso.get(i).getPosfinalHex());
         }
+    }
+
+    public ArrayList<Object> mandarInfo() {
+
+        if (lista.isEmpty() == false) {
+            lista.clear();
+            t.clear();
+        }
+        for (int i = 0; i < proceso.size(); i++) {
+
+            //System.out.println("!! P"+proceso.get(i).getTamanio() );
+            Object[] dato = new Object[]{String.valueOf(proceso.get(i).getId()), String.valueOf(proceso.get(i).getPosinicialHex()), String.valueOf(proceso.get(i).getPosfinalHex())};
+            lista.add(dato);
+            t.add(proceso.get(i).getTamanio());
+        }
+
+        return lista;
     }
 
     public Procesos getProcesoActual() {
@@ -91,7 +119,5 @@ public class MemoriaPrincipal {
     public void setTamanio(int tamanio) {
         this.tamanio = tamanio;
     }
-    
-    
-    
+
 }
