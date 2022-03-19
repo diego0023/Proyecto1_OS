@@ -116,12 +116,12 @@ public class Main extends javax.swing.JFrame {
                         if (memoria.isLast(memoria.ProcesoActual)) {
                             // esta en el ultimo proceso pasa al primero/ si solo hay uno da vueltas
                             hist.setTiempo_final();
-                            historial = historial + "Id: "+hist.getId()+hist.getTiempo_final()+"\n";
+                            historial = historial + "Id: "+hist.getId()+" Proceso finalizado: "+hist.getTiempo_final()+"\n";
                             memoria.setProcesoActual(memoria.proceso.getFirst());
                         } else {
                             // pasamos al siguiente 
                             hist.setTiempo_final();
-                            historial = historial + "Id: "+hist.getId()+hist.getTiempo_final()+"\n";
+                            historial = historial + "Id: "+hist.getId()+" Proceso finalizado: "+hist.getTiempo_final()+"\n";
                             aux2 =  memoria.getNext(aux);
                             memoria.setProcesoActual(aux2);
 

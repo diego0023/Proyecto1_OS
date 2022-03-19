@@ -16,6 +16,9 @@ public class Historial {
     Procesos proces = new Procesos();
     Calendar cal = Calendar.getInstance();
     Date fechahora = new Date();
+    private int hora;
+    private int minutos;
+    private int segundos;
     private int id;
     private String tiempo_inicial;
     private String tiempo_final;
@@ -48,6 +51,14 @@ public class Historial {
 
     public void setTiempo_final(){
         //this.tiempo_final  = "Fecha: " + cal.get(cal.DATE)+"/"+cal.get(cal.MONTH)+ " Hora: "+cal.get(cal.HOUR_OF_DAY)+":"+cal.get(cal.MINUTE)+":"+cal.get(cal.SECOND);
-        this.tiempo_final="Fecha y hora: " + fechahora;
+        //this.tiempo_final="Fecha y hora: " + fechahora;
+        actualizar();
+        this.tiempo_final= String.valueOf(hora)+":"+String.valueOf(minutos)+":"+String.valueOf(segundos);
+    }
+    
+    private void actualizar(){
+         hora=cal.get(Calendar.HOUR_OF_DAY);
+         minutos=cal.get(Calendar.MINUTE);
+         segundos=cal.get(Calendar.SECOND)+5;
     }
 }
