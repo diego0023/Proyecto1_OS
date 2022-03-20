@@ -92,7 +92,7 @@ public class MemoriaPrincipal {
         for (int i = 0; i < proceso.size(); i++) {
 
             //System.out.println("!! P"+proceso.get(i).getTamanio() );
-            Object[] dato = new Object[]{String.valueOf(proceso.get(i).getId()), String.valueOf(proceso.get(i).getPosinicialHex()), String.valueOf(proceso.get(i).getPosfinalHex())};
+            Object[] dato = new Object[]{String.valueOf("    P"+proceso.get(i).getId())+"   0x"+ proceso.get(i).getPosinicialHex()+" - 0x"+proceso.get(i).getPosfinalHex()};
             lista.add(dato);
             t.add(proceso.get(i).getTamanio());
         }

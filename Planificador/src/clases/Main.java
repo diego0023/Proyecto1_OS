@@ -1,5 +1,8 @@
 package clases;
 
+import java.awt.Color;
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -7,6 +10,8 @@ import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 public class Main extends javax.swing.JFrame {
@@ -41,6 +46,17 @@ public class Main extends javax.swing.JFrame {
         cpu.start();
         horaActual.start();
         modelo = (DefaultTableModel) jTable1.getModel();
+        Image icon = Toolkit.getDefaultToolkit().getImage("src/imagenes/process.png");
+        this.setIconImage(icon);
+        //set column width
+        jTable1.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+        jTable1.getColumnModel().getColumn(0).setPreferredWidth(172);
+        Color ivory = new Color(255, 255, 255);
+        jTable1.setOpaque(true);
+        jTable1.setFillsViewportHeight(true);
+        jTable1.setBackground(ivory);
+        jTable1.getTableHeader().setBackground(ivory);
+
     }
 
     public int getRandom() {
@@ -183,49 +199,92 @@ public class Main extends javax.swing.JFrame {
 
         btnProceso = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
-        lbIDProceso = new javax.swing.JLabel();
-        lbContadorPrograma = new javax.swing.JLabel();
         lbBase = new javax.swing.JLabel();
-        lbLimite = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
-        lbActivador = new javax.swing.JLabel();
-        Hora = new javax.swing.JLabel();
-        WTime = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
         jLabel8 = new javax.swing.JLabel();
+        lbIDProceso = new javax.swing.JLabel();
+        lbContadorPrograma = new javax.swing.JLabel();
+        lbLimite = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        lbActivador = new javax.swing.JLabel();
+        Hora = new javax.swing.JLabel();
+        jPanel2 = new javax.swing.JPanel();
+        jLabel9 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setPreferredSize(new java.awt.Dimension(830, 600));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        btnProceso.setText("Agregar Proceso");
+        btnProceso.setBackground(new java.awt.Color(217, 228, 221));
+        btnProceso.setFont(new java.awt.Font("Microsoft YaHei Light", 0, 14)); // NOI18N
+        btnProceso.setText("Nuevo Proceso");
+        btnProceso.setBorder(null);
         btnProceso.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnProcesoActionPerformed(evt);
             }
         });
-        getContentPane().add(btnProceso, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 120, -1, -1));
+        getContentPane().add(btnProceso, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 170, 120, 40));
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        jPanel1.setForeground(new java.awt.Color(167, 187, 199));
 
-        jLabel1.setText("PROCESADOR");
+        jLabel3.setFont(new java.awt.Font("Microsoft YaHei Light", 0, 18)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(85, 85, 85));
+        jLabel3.setText("Contador de programa");
 
-        jLabel2.setText("ID:");
+        jLabel4.setFont(new java.awt.Font("Microsoft YaHei Light", 0, 18)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(85, 85, 85));
+        jLabel4.setText("Calendarizador");
 
-        jLabel3.setText("Contador de programa:");
-
-        jLabel4.setText("Info del Proceso:");
-
+        jLabel5.setFont(new java.awt.Font("Microsoft YaHei Light", 0, 18)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(85, 85, 85));
         jLabel5.setText("Base:");
 
+        lbBase.setFont(new java.awt.Font("Microsoft YaHei", 0, 14)); // NOI18N
+        lbBase.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lbBase.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        lbBase.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+
+        jTextArea1.setColumns(20);
+        jTextArea1.setFont(new java.awt.Font("Microsoft YaHei", 0, 14)); // NOI18N
+        jTextArea1.setForeground(new java.awt.Color(85, 85, 85));
+        jTextArea1.setRows(5);
+        jScrollPane1.setViewportView(jTextArea1);
+
+        jLabel8.setFont(new java.awt.Font("Microsoft YaHei Light", 0, 18)); // NOI18N
+        jLabel8.setForeground(new java.awt.Color(85, 85, 85));
+        jLabel8.setText("Historial");
+
+        lbIDProceso.setFont(new java.awt.Font("Microsoft YaHei", 0, 14)); // NOI18N
+        lbIDProceso.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lbIDProceso.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        lbIDProceso.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+
+        lbContadorPrograma.setFont(new java.awt.Font("Microsoft YaHei", 0, 14)); // NOI18N
+        lbContadorPrograma.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lbContadorPrograma.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        lbContadorPrograma.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+
+        lbLimite.setFont(new java.awt.Font("Microsoft YaHei", 0, 14)); // NOI18N
+        lbLimite.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lbLimite.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        lbLimite.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+
+        jLabel6.setFont(new java.awt.Font("Microsoft YaHei Light", 0, 18)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(85, 85, 85));
         jLabel6.setText("Limite:");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -235,113 +294,133 @@ public class Main extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel4)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel1))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(34, 34, 34)
-                        .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lbIDProceso, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(23, 23, 23)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel6)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(lbLimite, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel5)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(lbBase, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(103, 103, 103)
+                                .addGap(103, 103, 103)
+                                .addComponent(jLabel6))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(jLabel5)))
+                        .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(lbContadorPrograma, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                .addContainerGap(103, Short.MAX_VALUE))
+                            .addComponent(lbLimite, javax.swing.GroupLayout.DEFAULT_SIZE, 60, Short.MAX_VALUE)
+                            .addComponent(lbBase, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(122, 122, 122)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel4)
+                            .addComponent(lbIDProceso, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(93, 93, 93)
+                        .addComponent(jLabel3))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(121, 121, 121)
+                        .addComponent(lbContadorPrograma, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel8))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 364, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(16, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addGap(28, 28, 28))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(lbIDProceso, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(13, 13, 13)
+                .addComponent(jLabel4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lbIDProceso, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(20, 20, 20)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lbContadorPrograma, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lbBase, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(lbContadorPrograma, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(24, 24, 24)
+                        .addComponent(lbBase, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(lbLimite, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(15, 15, 15)
+                                .addComponent(jLabel6))))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(32, 32, 32)
+                        .addComponent(jLabel5)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lbLimite, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(46, 46, 46))
+                .addComponent(jLabel8)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(562, 30, -1, -1));
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 70, 390, 440));
 
+        jLabel7.setFont(new java.awt.Font("Microsoft YaHei UI Light", 1, 18)); // NOI18N
+        jLabel7.setForeground(new java.awt.Color(167, 187, 199));
         jLabel7.setText("ACTIVADOR:");
-        getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 170, -1, -1));
-        getContentPane().add(lbActivador, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 170, 64, 16));
+        getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 450, -1, 30));
 
+        lbActivador.setFont(new java.awt.Font("Microsoft JhengHei Light", 0, 18)); // NOI18N
+        lbActivador.setForeground(new java.awt.Color(218, 127, 143));
+        getContentPane().add(lbActivador, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 450, 50, 30));
+
+        Hora.setFont(new java.awt.Font("Microsoft JhengHei UI Light", 0, 24)); // NOI18N
+        Hora.setForeground(new java.awt.Color(85, 85, 85));
         Hora.setText("Hora de Sistema");
-        getContentPane().add(Hora, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 525, 112, -1));
+        getContentPane().add(Hora, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 510, 260, 40));
 
-        WTime.setText("Mostrar Hora");
-        WTime.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                WTimeActionPerformed(evt);
-            }
-        });
-        getContentPane().add(WTime, new org.netbeans.lib.awtextra.AbsoluteConstraints(858, 266, -1, -1));
+        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(167, 187, 199), 2));
+        jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
+        jLabel9.setBackground(new java.awt.Color(167, 187, 199));
+        jLabel9.setFont(new java.awt.Font("Microsoft JhengHei UI", 0, 16)); // NOI18N
+        jLabel9.setForeground(new java.awt.Color(85, 85, 85));
+        jLabel9.setText("       Activador 0x00 - 0x28");
+        jLabel9.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(167, 187, 199), 2));
+        jPanel2.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(-20, 0, 248, 35));
 
-        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(625, 339, 333, 91));
+        jLabel10.setBackground(new java.awt.Color(167, 187, 199));
+        jLabel10.setFont(new java.awt.Font("Microsoft JhengHei UI", 0, 16)); // NOI18N
+        jLabel10.setForeground(new java.awt.Color(85, 85, 85));
+        jLabel10.setText("          S.O      0x29 - 0x31");
+        jLabel10.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(167, 187, 199), 2));
+        jPanel2.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(-20, 40, 260, 40));
 
-        jLabel8.setText("Historial");
-        getContentPane().add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(625, 317, -1, -1));
-
+        jTable1.setFont(new java.awt.Font("Microsoft YaHei UI", 0, 16)); // NOI18N
+        jTable1.setForeground(new java.awt.Color(85, 85, 85));
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Activador", " ", " "
+                ""
             }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        jTable1.getTableHeader().setReorderingAllowed(false);
+        ));
+        jTable1.setSelectionForeground(new java.awt.Color(205, 201, 195));
+        jTable1.setShowHorizontalLines(true);
         jScrollPane2.setViewportView(jTable1);
-        if (jTable1.getColumnModel().getColumnCount() > 0) {
-            jTable1.getColumnModel().getColumn(0).setResizable(false);
-            jTable1.getColumnModel().getColumn(1).setResizable(false);
-            jTable1.getColumnModel().getColumn(2).setResizable(false);
-        }
 
-        getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 30, 310, -1));
+        jPanel2.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 80, 180, 280));
+
+        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 80, 180, 360));
+
+        jLabel1.setFont(new java.awt.Font("Microsoft YaHei UI Light", 1, 18)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(167, 187, 199));
+        jLabel1.setText("PROCESADOR");
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 30, -1, -1));
+
+        jLabel2.setFont(new java.awt.Font("Microsoft YaHei UI Light", 1, 18)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(167, 187, 199));
+        jLabel2.setText("MEMORIA PRINCIPAL");
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 40, -1, -1));
+
+        jLabel11.setBackground(new java.awt.Color(225, 229, 234));
+        jLabel11.setOpaque(true);
+        getContentPane().add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1060, 620));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -457,8 +536,8 @@ public class Main extends javax.swing.JFrame {
             if (t.get(i) < 11) {
                 jTable1.setRowHeight(i, (30 + aux));
             } else {
-                aux = t.get(i) - 10;
-                jTable1.setRowHeight(i, (40 + aux));
+                aux = t.get(i) - 8;
+                jTable1.setRowHeight(i, (45 + aux));
             }
 
             //System.out.println("Tamañoo  :"+ t.get(i));
@@ -480,10 +559,6 @@ public class Main extends javax.swing.JFrame {
         }
 
     }
-    private void WTimeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_WTimeActionPerformed
-        // TODO add your handling code here:
-        FTime = true;
-    }//GEN-LAST:event_WTimeActionPerformed
 
     /**
      * @param args the command line arguments
@@ -522,9 +597,10 @@ public class Main extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel Hora;
-    private javax.swing.JButton WTime;
     private javax.swing.JButton btnProceso;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -532,7 +608,9 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable1;
